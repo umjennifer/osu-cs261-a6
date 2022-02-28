@@ -128,7 +128,11 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        if new_capacity > 1:
+            old_buckets = self.buckets
+            self.capacity = new_capacity
+            for i in range(self.capacity):
+                self.buckets = old_buckets
 
     def get_keys(self) -> DynamicArray:
         """
@@ -277,13 +281,13 @@ if __name__ == "__main__":
     # print(m.get('key1'))
     # m.remove('key4')
     #
-    # print("\nPDF - resize example 1")
-    # print("----------------------")
-    # m = HashMap(20, hash_function_1)
-    # m.put('key1', 10)
-    # print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
-    # m.resize_table(30)
-    # print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
+    print("\nPDF - resize example 1")
+    print("----------------------")
+    m = HashMap(20, hash_function_1)
+    m.put('key1', 10)
+    print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
+    m.resize_table(30)
+    print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
     #
     # print("\nPDF - resize example 2")
     # print("----------------------")
