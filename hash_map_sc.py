@@ -70,7 +70,13 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        h = self.hash_function(key)
+        i = h % self.buckets.length()
+        node_matching_key = self.buckets[i].contains(key)
+        if node_matching_key is not None:
+            return node_matching_key.value
+        return None
+
 
     def put(self, key: str, value: object) -> None:
         """
@@ -271,22 +277,22 @@ if __name__ == "__main__":
     #     result &= not m.contains_key(str(key + 1))
     # print(result)
     #
-    # print("\nPDF - get example 1")
-    # print("-------------------")
-    # m = HashMap(30, hash_function_1)
-    # print(m.get('key'))
-    # m.put('key1', 10)
-    # print(m.get('key1'))
+    print("\nPDF - get example 1")
+    print("-------------------")
+    m = HashMap(30, hash_function_1)
+    print(m.get('key'))
+    m.put('key1', 10)
+    print(m.get('key1'))
     #
-    # print("\nPDF - get example 2")
-    # print("-------------------")
-    # m = HashMap(150, hash_function_2)
-    # for i in range(200, 300, 7):
-    #     m.put(str(i), i * 10)
-    # print(m.size, m.capacity)
-    # for i in range(200, 300, 21):
-    #     print(i, m.get(str(i)), m.get(str(i)) == i * 10)
-    #     print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
+    print("\nPDF - get example 2")
+    print("-------------------")
+    m = HashMap(150, hash_function_2)
+    for i in range(200, 300, 7):
+        m.put(str(i), i * 10)
+    print(m.size, m.capacity)
+    for i in range(200, 300, 21):
+        print(i, m.get(str(i)), m.get(str(i)) == i * 10)
+        print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
     #
     print("\nPDF - remove example 1")
     print("----------------------")
@@ -326,17 +332,17 @@ if __name__ == "__main__":
     #         result &= not m.contains_key(str(key + 1))
     #     print(capacity, result, m.size, m.capacity, round(m.table_load(), 2))
     #
-    print("\nPDF - get_keys example 1")
-    print("------------------------")
-    m = HashMap(10, hash_function_2)
-    for i in range(100, 200, 10):
-        m.put(str(i), str(i * 10))
-    print(m.get_keys())
-
-    m.resize_table(1)
-    print(m.get_keys())
-
-    m.put('200', '2000')
-    m.remove('100')
-    m.resize_table(2)
-    print(m.get_keys())
+    # print("\nPDF - get_keys example 1")
+    # print("------------------------")
+    # m = HashMap(10, hash_function_2)
+    # for i in range(100, 200, 10):
+    #     m.put(str(i), str(i * 10))
+    # print(m.get_keys())
+    #
+    # m.resize_table(1)
+    # print(m.get_keys())
+    #
+    # m.put('200', '2000')
+    # m.remove('100')
+    # m.resize_table(2)
+    # print(m.get_keys())
