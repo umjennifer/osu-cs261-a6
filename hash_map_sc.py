@@ -64,6 +64,7 @@ class HashMap:
         """
         for i in range(self.buckets.length()):
             self.buckets[i] = LinkedList()
+        self.size = 0
 
     def get(self, key: str) -> object:
         """
