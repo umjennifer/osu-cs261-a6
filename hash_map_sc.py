@@ -162,7 +162,15 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        da = DynamicArray()
+        print(self)
+        for i in range(self.capacity):
+            print(self.buckets[i])
+            for node in self.buckets[i]:
+                da.append(node.key)
+        return da
+
+
 
 
 # BASIC TESTING
@@ -333,16 +341,18 @@ if __name__ == "__main__":
     #         result &= not m.contains_key(str(key + 1))
     #     print(capacity, result, m.size, m.capacity, round(m.table_load(), 2))
     #
-    # print("\nPDF - get_keys example 1")
-    # print("------------------------")
-    # m = HashMap(10, hash_function_2)
-    # for i in range(100, 200, 10):
-    #     m.put(str(i), str(i * 10))
-    # print(m.get_keys())
-    #
+    print("\nPDF - get_keys example 1")
+    print("------------------------")
+    m = HashMap(10, hash_function_2)
+    for i in range(100, 200, 10):
+        m.put(str(i), str(i * 10))
+    print(m.get_keys())
+
+    # print()
     # m.resize_table(1)
     # print(m.get_keys())
     #
+    # print()
     # m.put('200', '2000')
     # m.remove('100')
     # m.resize_table(2)
