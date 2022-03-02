@@ -104,7 +104,7 @@ class HashMap:
         # quadratic probing required
         load_factor = self.table_load()
         if load_factor >= 0.5:
-            print("load_factor >=0.5. returning for now")
+            # print("load_factor >=0.5. returning for now")
             # self.resize_table()
             return
 
