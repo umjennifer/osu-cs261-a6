@@ -319,33 +319,33 @@ if __name__ == "__main__":
     # print(m.get('key1'))
     # m.remove('key4')
     #
-    # print("\nPDF - resize example 1")
-    # print("----------------------")
-    # m = HashMap(20, hash_function_1)
-    # m.put('key1', 10)
-    # print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
-    # m.resize_table(30)
-    # print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
-
-    print("\nPDF - resize example 2")
+    print("\nPDF - resize example 1")
     print("----------------------")
-    m = HashMap(75, hash_function_2)
-    keys = [i for i in range(1, 1000, 13)]
-    for key in keys:
-        m.put(str(key), key * 42)
-    print(m.size, m.capacity)
+    m = HashMap(20, hash_function_1)
+    m.put('key1', 10)
+    print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
+    m.resize_table(30)
+    print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'),"\n", m)
 
-    for capacity in range(111, 1000, 117):
-        m.resize_table(capacity)
-
-        m.put('some key', 'some value')
-        result = m.contains_key('some key')
-        m.remove('some key')
-
-        for key in keys:
-            result &= m.contains_key(str(key))
-            result &= not m.contains_key(str(key + 1))
-        print(capacity, result, m.size, m.capacity, round(m.table_load(), 2))
+    # print("\nPDF - resize example 2")
+    # print("----------------------")
+    # m = HashMap(75, hash_function_2)
+    # keys = [i for i in range(1, 1000, 13)]
+    # for key in keys:
+    #     m.put(str(key), key * 42)
+    # print(m.size, m.capacity)
+    #
+    # for capacity in range(111, 1000, 117):
+    #     m.resize_table(capacity)
+    #
+    #     m.put('some key', 'some value')
+    #     result = m.contains_key('some key')
+    #     m.remove('some key')
+    #
+    #     for key in keys:
+    #         result &= m.contains_key(str(key))
+    #         result &= not m.contains_key(str(key + 1))
+    #     print(capacity, result, m.size, m.capacity, round(m.table_load(), 2))
 
     # print("\nPDF - get_keys example 1")
     # print("------------------------")

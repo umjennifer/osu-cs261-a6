@@ -83,7 +83,9 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        for i in range(self.buckets.length()):
+            self.buckets[i] = None
+        self.size = 0
 
     def get(self, key: str) -> object:
         """
@@ -100,36 +102,34 @@ class HashMap:
         # resize the table before putting the new key/value pair
         #
         # quadratic probing required
-
         load_factor = self.table_load()
         if load_factor >= 0.5:
-            self.resize_table()
+            print("load_factor >=0.5. returning for now")
+            # self.resize_table()
+            return
 
         h = self.hash_function(key)
         i = h % self.buckets.length()
-        # print("key=", key, "h=", h, "i=", i)
+
         if self.buckets[i] is None:
             self.buckets[i] = HashEntry(key, value)
             self.size += 1
         else: # self.buckets[i] is not None
-            # print("self.buckets[i] is not None")
-            j = 1
+            j = 0
             i_initial = i
-            # i = i_initial + (j * j)
-            # print("i=",i, "i_initial=", i_initial, "j=",j)
             while self.buckets[i] is not None:
+                print("i=",i, "key=", key, "value=", value, "j=",j, "i_initial=", i_initial, "self.buckets[i]=", self.buckets[i], end=" ")
                 if self.buckets[i].key == key:
                     self.buckets[i].value = value
                     break
                 else:
                     j += 1
-                    i = i_initial + (j * j)
+                    i = (i_initial + (j * j)) % self.capacity
+                    print("  new_i=", i)
+                print(self)
             if i != i_initial:
                 self.buckets[i] = HashEntry(key, value)
                 self.size += 1
-
-
-
 
 
     def remove(self, key: str) -> None:
@@ -178,19 +178,6 @@ class HashMap:
 
 if __name__ == "__main__":
 
-    # print("\nPDF - empty_buckets my example 1")
-    # print("-----------------------------")
-    # m = HashMap(10, hash_function_1)
-    # print(m.empty_buckets(), m.size, m.capacity, m, "\n")
-    # m.put('key1', 10)
-    # print(m.empty_buckets(), m.size, m.capacity, m, "\n")
-    # m.put('key2', 20)
-    # print(m.empty_buckets(), m.size, m.capacity, m, "\n")
-    # m.put('key1', 30)
-    # print(m.empty_buckets(), m.size, m.capacity, m, "\n")
-    # m.put('key4', 40)
-    # print(m.empty_buckets(), m.size, m.capacity, m, "\n")
-
     # print("\nPDF - empty_buckets example 1")
     # print("-----------------------------")
     # m = HashMap(100, hash_function_1)
@@ -211,7 +198,7 @@ if __name__ == "__main__":
     for i in range(150):
         m.put('key' + str(i), i * 100)
         if i % 30 == 0:
-            print(m.empty_buckets(), m.size, m.capacity)
+            print(m.empty_buckets(), m.size, m.capacity, m)
     #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
