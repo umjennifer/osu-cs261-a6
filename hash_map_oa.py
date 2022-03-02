@@ -118,15 +118,15 @@ class HashMap:
             j = 0
             i_initial = i
             while self.buckets[i] is not None:
-                print("i=",i, "key=", key, "value=", value, "j=",j, "i_initial=", i_initial, "self.buckets[i]=", self.buckets[i], end=" ")
+                # print("i=",i, "key=", key, "value=", value, "j=",j, "i_initial=", i_initial, "self.buckets[i]=", self.buckets[i], end=" ")
                 if self.buckets[i].key == key:
                     self.buckets[i].value = value
                     break
                 else:
                     j += 1
                     i = (i_initial + (j * j)) % self.capacity
-                    print("  new_i=", i)
-                print(self)
+                    # print("  new_i=", i)
+                # print(self)
             if i != i_initial:
                 self.buckets[i] = HashEntry(key, value)
                 self.size += 1
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     for i in range(150):
         m.put('key' + str(i), i * 100)
         if i % 30 == 0:
-            print(m.empty_buckets(), m.size, m.capacity, m)
+            print(m.empty_buckets(), m.size, m.capacity)
     #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
