@@ -157,7 +157,8 @@ class HashMap:
         i_initial = i
         while self.buckets[i] is not None:
             if self.buckets[i].key == key:
-                self.buckets[i].tombstone = True
+
+                self.buckets[i].is_tombstone = True
                 self.size -= 1
                 return
             j += 1
