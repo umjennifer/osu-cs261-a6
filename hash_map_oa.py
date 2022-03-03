@@ -5,6 +5,7 @@
 # Due Date:
 # Description:
 
+# TODO: CHECK ALL TOMBSTONES!!!
 
 from a6_include import *
 
@@ -149,7 +150,7 @@ class HashMap:
         """
         # quadratic probing required
         if self.size == 0:
-            return False
+            return
         h = self.hash_function(key)
         i = h % self.buckets.length()
 
