@@ -92,7 +92,18 @@ class HashMap:
         TODO: Write this implementation
         """
         # quadratic probing required
-        pass
+        h = self.hash_function(key)
+        i = h % self.buckets.length()
+
+        j = 0
+        i_initial = i
+        while self.buckets[i] is not None:
+            if self.buckets[i].key == key:
+                return self.buckets[i].value
+            j += 1
+            i = (i_initial + (j * j)) % self.capacity
+        return None
+
 
     def put(self, key: str, value: object) -> None:
         """
@@ -191,14 +202,14 @@ if __name__ == "__main__":
     # m.put('key4', 40)
     # print(m.empty_buckets(), m.size, m.capacity)
     #
-    print("\nPDF - empty_buckets example 2")
-    print("-----------------------------")
-    # this test assumes that put() has already been correctly implemented
-    m = HashMap(50, hash_function_1)
-    for i in range(150):
-        m.put('key' + str(i), i * 100)
-        if i % 30 == 0:
-            print(m.empty_buckets(), m.size, m.capacity)
+    # print("\nPDF - empty_buckets example 2")
+    # print("-----------------------------")
+    # # this test assumes that put() has already been correctly implemented
+    # m = HashMap(50, hash_function_1)
+    # for i in range(150):
+    #     m.put('key' + str(i), i * 100)
+    #     if i % 30 == 0:
+    #         print(m.empty_buckets(), m.size, m.capacity)
     #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
@@ -295,15 +306,15 @@ if __name__ == "__main__":
     # m.put('key1', 10)
     # print(m.get('key1'))
     #
-    # print("\nPDF - get example 2")
-    # print("-------------------")
-    # m = HashMap(150, hash_function_2)
-    # for i in range(200, 300, 7):
-    #     m.put(str(i), i * 10)
-    # print(m.size, m.capacity)
-    # for i in range(200, 300, 21):
-    #     print(i, m.get(str(i)), m.get(str(i)) == i * 10)
-    #     print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
+    print("\nPDF - get example 2")
+    print("-------------------")
+    m = HashMap(150, hash_function_2)
+    for i in range(200, 300, 7):
+        m.put(str(i), i * 10)
+    print(m.size, m.capacity)
+    for i in range(200, 300, 21):
+        print(i, m.get(str(i)), m.get(str(i)) == i * 10)
+        print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
     #
     # print("\nPDF - remove example 1")
     # print("----------------------")
