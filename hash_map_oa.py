@@ -158,6 +158,7 @@ class HashMap:
         while self.buckets[i] is not None:
             if self.buckets[i].key == key:
                 self.buckets[i] = None
+                self.size -= 1
                 return
             j += 1
             i = (i_initial + (j * j)) % self.capacity
