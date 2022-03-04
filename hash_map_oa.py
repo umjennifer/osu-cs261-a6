@@ -241,7 +241,7 @@ class HashMap:
 
     def get_keys(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        TODO: Write this implementations
         """
         da = DynamicArray()
         for i in range(self.capacity):
