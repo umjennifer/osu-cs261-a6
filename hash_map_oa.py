@@ -132,20 +132,22 @@ class HashMap:
                 if self.buckets[i].key == key:
                     if self.buckets[i].is_tombstone is False: # matching key and is not tombstone record
                         self.buckets[i].value = value
-                        break
+                        return
                     else:  # matching key and is tombstone record
                         self.buckets[i].value = value
                         self.buckets[i].is_tombstone = False
-                        break
+                        return
                 else: # self.buckets[i] is not None and not matching key
                     if self.buckets[i].is_tombstone is True:
                         self.buckets[i] = HashEntry(key, value)
+                        return
                     else:
                         j += 1
                         i = (i_initial + (j * j)) % self.capacity
                     # print("  new_i=", i)
                 # print(self)
             if i != i_initial:
+                # print("pt a key=", key, "prechange self.buckets[i]=", self.buckets[i])
                 self.buckets[i] = HashEntry(key, value)
                 self.size += 1
 
@@ -327,15 +329,15 @@ if __name__ == "__main__":
     #     if i % 25 == 24:
     #         print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
     #
-    print("\nPDF - put example 2")
-    print("-------------------")
-    m = HashMap(40, hash_function_2)
-    for i in range(50):
-        m.put('str' + str(i // 3), i * 100)
-        # if i % 10 == 9:
-        #     print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
-        if 29 <= i <= 39:
-            print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
+    # print("\nPDF - put example 2")
+    # print("-------------------")
+    # m = HashMap(40, hash_function_2)
+    # for i in range(50):
+    #     m.put('str' + str(i // 3), i * 100)
+    #     # if i % 10 == 9:
+    #     #     print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
+    #     if 29 <= i <= 39:
+    #         print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
 
 
     #
@@ -438,10 +440,22 @@ if __name__ == "__main__":
     # m.resize_table(2)
     # print(m.get_keys())
 
-    # print("\nself- put example")
-    # print("-----------------------------")
-    # m = HashMap(40, hash_function_2)
-    # m.put('str0', 0)
+    print("\nself- put example")
+    print("-----------------------------")
+    m = HashMap(40, hash_function_2)
+    m.put('str0', 200)
+    m.put('str1', 500)
+    m.put('str10', 3000)
+    m.put('str2', 800)
+    m.put('str3', 1100)
+    m.put('str4', 1400)
+    m.put('str5', 1700)
+    m.put('str6', 2000)
+    m.put('str7', 2300)
+    m.put('str8', 2600)
+    m.put('str9', 2900)
+    print("ori size=", m.size)
     # print(m)
-    # m.put('str0', 100)
+    m.put('str10', 3100)
+    print("new size=", m.size)
     # print(m)
