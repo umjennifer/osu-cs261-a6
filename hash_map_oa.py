@@ -83,7 +83,9 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        for i in range(self.buckets.length()):
+            self.buckets[i] = None
+        self.size = 0
 
     def get(self, key: str) -> object:
         """
@@ -111,7 +113,7 @@ class HashMap:
         # quadratic probing required
         load_factor = self.table_load()
         if load_factor >= 0.5:
-            # print("load_factor >=0.5. returning for now") # TODO: DEBUG
+            # print("load_factor=", self.table_load()) # TODO: DEBUG
             self.resize_table(self.capacity * 2)
             # return # TODO: DEBUG
         h = self.hash_function(key)
@@ -126,10 +128,11 @@ class HashMap:
         else: # self.buckets[i] is not None and self.buckets[i] is not a tombstone
             j = 0
             i_initial = i
-            while self.buckets[i] is not None or self.buckets[i].is_tombstone is False:
+            while self.buckets[i] is not None:
                 # print("i=",i, "key=", key, "value=", value, "j=",j, "i_initial=", i_initial, "self.buckets[i]=", self.buckets[i], end=" ")
-                if self.buckets[i].key == key:
-                    self.buckets[i].value = value
+                if self.buckets[i].is_tombstone is True:
+                    if self.buckets[i].key == key:
+                        self.buckets[i].value = value
                     break
                 else:
                     j += 1
@@ -179,17 +182,26 @@ class HashMap:
             return
         da = self.get_keys()
         old = HashMap(self.capacity, self.hash_function)
+        old.size = self.size
         for i in range(self.capacity):
             old.buckets[i] = self.buckets[i]
 
         self.clear()
+        # self = HashMap(new_capacity, self.hash_function)
         self.capacity = new_capacity
         self.buckets = DynamicArray()
+        for _ in range(new_capacity):
+            self.buckets.append(None)
 
         for i in range(da.length()):
+            # print("a")
             key = da[i]
             value = old.get(key)
             self.put(key, value)
+
+        # print("old size=", old.size, "\n", old)
+        # print("new size=", self.size, "\n", self)
+
 
 
 
@@ -207,28 +219,29 @@ class HashMap:
 
 if __name__ == "__main__":
 
-    print("\nPDF - empty_buckets example 1")
-    print("-----------------------------")
-    m = HashMap(100, hash_function_1)
-    print(m.empty_buckets(), m.size, m.capacity)
-    m.put('key1', 10)
-    print(m.empty_buckets(), m.size, m.capacity)
-    m.put('key2', 20)
-    print(m.empty_buckets(), m.size, m.capacity)
-    m.put('key1', 30)
-    print(m.empty_buckets(), m.size, m.capacity)
-    m.put('key4', 40)
-    print(m.empty_buckets(), m.size, m.capacity)
-
-
-    # print("\nPDF - empty_buckets example 2")
+    # print("\nPDF - empty_buckets example 1")
     # print("-----------------------------")
-    # # this test assumes that put() has already been correctly implemented
-    # m = HashMap(50, hash_function_1)
-    # for i in range(150):
-    #     m.put('key' + str(i), i * 100)
-    #     if i % 30 == 0:
-    #         print(m.empty_buckets(), m.size, m.capacity)
+    # m = HashMap(100, hash_function_1)
+    # print(m.empty_buckets(), m.size, m.capacity)
+    # m.put('key1', 10)
+    # print(m.empty_buckets(), m.size, m.capacity)
+    # m.put('key2', 20)
+    # print(m.empty_buckets(), m.size, m.capacity)
+    # m.put('key1', 30)
+    # print(m.empty_buckets(), m.size, m.capacity)
+    # m.put('key4', 40)
+    # print(m.empty_buckets(), m.size, m.capacity)
+
+
+    print("\nPDF - empty_buckets example 2")
+    print("-----------------------------")
+    # this test assumes that put() has already been correctly implemented
+    m = HashMap(50, hash_function_1)
+    for i in range(150):
+        m.put('key' + str(i), i * 100)
+        # print(m.empty_buckets(), m.size, m.capacity)
+        if i % 30 == 0:
+            print(m.empty_buckets(), m.size, m.capacity)
     #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
