@@ -163,6 +163,7 @@ class HashMap:
             if self.buckets[i].is_tombstone is False:
                 if self.buckets[i].key == key:
                     self.buckets[i].is_tombstone = True
+                    self.size -= 1
                     return
             j += 1
             i = (i_initial + (j * j)) % self.capacity
