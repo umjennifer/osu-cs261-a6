@@ -111,9 +111,9 @@ class HashMap:
         # quadratic probing required
         load_factor = self.table_load()
         if load_factor >= 0.5:
-            print("load_factor >=0.5. returning for now") # TODO: DEBUG
+            # print("load_factor >=0.5. returning for now") # TODO: DEBUG
             self.resize_table(self.capacity * 2)
-            return # TODO: DEBUG
+            # return # TODO: DEBUG
         h = self.hash_function(key)
         i = h % self.buckets.length()
 
