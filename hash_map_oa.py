@@ -130,7 +130,7 @@ class HashMap:
             i_initial = i
             while self.buckets[i] is not None:
                 # print("i=",i, "key=", key, "value=", value, "j=",j, "i_initial=", i_initial, "self.buckets[i]=", self.buckets[i], end=" ")
-                if self.buckets[i].is_tombstone is True:
+                if self.buckets[i].is_tombstone is False:
                     if self.buckets[i].key == key:
                         self.buckets[i].value = value
                     break
@@ -233,15 +233,15 @@ if __name__ == "__main__":
     # print(m.empty_buckets(), m.size, m.capacity)
 
 
-    print("\nPDF - empty_buckets example 2")
-    print("-----------------------------")
-    # this test assumes that put() has already been correctly implemented
-    m = HashMap(50, hash_function_1)
-    for i in range(150):
-        m.put('key' + str(i), i * 100)
-        # print(m.empty_buckets(), m.size, m.capacity)
-        if i % 30 == 0:
-            print(m.empty_buckets(), m.size, m.capacity)
+    # print("\nPDF - empty_buckets example 2")
+    # print("-----------------------------")
+    # # this test assumes that put() has already been correctly implemented
+    # m = HashMap(50, hash_function_1)
+    # for i in range(150):
+    #     m.put('key' + str(i), i * 100)
+    #     # print(m.empty_buckets(), m.size, m.capacity)
+    #     if i % 30 == 0:
+    #         print(m.empty_buckets(), m.size, m.capacity)
     #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
@@ -400,3 +400,11 @@ if __name__ == "__main__":
     # m.remove('100')
     # m.resize_table(2)
     # print(m.get_keys())
+
+    print("\nself- put example")
+    print("-----------------------------")
+    m = HashMap(40, hash_function_2)
+    m.put('str0', 0)
+    print(m)
+    m.put('str0', 100)
+    print(m)
