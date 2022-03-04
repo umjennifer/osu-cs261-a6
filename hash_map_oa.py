@@ -163,7 +163,9 @@ class HashMap:
         """
         empty_buckets_count = 0
         for i in range(self.buckets.length()):
-            if self.buckets[i] is None or self.buckets[i].is_tombstone:
+            if self.buckets[i] is None:
+                empty_buckets_count += 1
+            elif self.buckets[i].is_tombstone:
                 empty_buckets_count += 1
         return empty_buckets_count
 
@@ -187,7 +189,6 @@ class HashMap:
             old.buckets[i] = self.buckets[i]
 
         self.clear()
-        # self = HashMap(new_capacity, self.hash_function)
         self.capacity = new_capacity
         self.buckets = DynamicArray()
         for _ in range(new_capacity):
@@ -213,7 +214,6 @@ class HashMap:
         for i in range(self.capacity):
             if self.buckets[i] is not None and self.buckets[i].is_tombstone is False:
                 da.append(self.buckets[i].key)
-        # print("self=", self)
         return da
 
 
