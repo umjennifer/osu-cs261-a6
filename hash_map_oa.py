@@ -96,12 +96,17 @@ class HashMap:
         i = h % self.buckets.length()
         j = 0
         i_initial = i
+
+        if self.contains_key(key) is False:
+            return
+
         while self.buckets[i] is not None:
             if self.buckets[i].is_tombstone is False:
                 if self.buckets[i].key == key:
                     return self.buckets[i].value
             j += 1
             i = (i_initial + (j * j)) % self.capacity
+
 
 
     def put(self, key: str, value: object) -> None:
@@ -147,7 +152,7 @@ class HashMap:
                     # print("  new_i=", i)
                 # print(self)
             if i != i_initial:
-                # print("pt a key=", key, "prechange self.buckets[i]=", self.buckets[i])
+                # print("     pt a key=", key, "prechange self.buckets[i]=", self.buckets[i])
                 self.buckets[i] = HashEntry(key, value)
                 self.size += 1
 
@@ -160,6 +165,10 @@ class HashMap:
         i = h % self.buckets.length()
         j = 0
         i_initial = i
+
+        if self.contains_key(key) is False:
+            return
+
         while self.buckets[i] is not None:
             if self.buckets[i].is_tombstone is False:
                 if self.buckets[i].key == key:
@@ -266,8 +275,8 @@ if __name__ == "__main__":
     # print(m.empty_buckets(), m.size, m.capacity)
     # m.put('key4', 40)
     # print(m.empty_buckets(), m.size, m.capacity)
-
-
+    #
+    #
     # print("\nPDF - empty_buckets example 2")
     # print("-----------------------------")
     # # this test assumes that put() has already been correctly implemented
@@ -277,7 +286,7 @@ if __name__ == "__main__":
     #     # print(m.empty_buckets(), m.size, m.capacity)
     #     if i % 30 == 0:
     #         print(m.empty_buckets(), m.size, m.capacity)
-
+    #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
     # m = HashMap(100, hash_function_1)
@@ -320,27 +329,25 @@ if __name__ == "__main__":
     # print(m.size, m.capacity)
     # m.clear()
     # print(m.size, m.capacity)
-    #
-    # print("\nPDF - put example 1")
-    # print("-------------------")
-    # m = HashMap(50, hash_function_1)
-    # for i in range(150):
-    #     m.put('str' + str(i), i * 100)
-    #     if i % 25 == 24:
-    #         print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
-    #
-    # print("\nPDF - put example 2")
-    # print("-------------------")
-    # m = HashMap(40, hash_function_2)
-    # for i in range(50):
-    #     m.put('str' + str(i // 3), i * 100)
-    #     # if i % 10 == 9:
-    #     #     print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
-    #     if 29 <= i <= 39:
-    #         print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
+
+    print("\nPDF - put example 1")
+    print("-------------------")
+    m = HashMap(50, hash_function_1)
+    for i in range(150):
+        m.put('str' + str(i), i * 100)
+        if i % 25 == 24:
+            print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
+
+    print("\nPDF - put example 2")
+    print("-------------------")
+    m = HashMap(40, hash_function_2)
+    for i in range(50):
+        m.put('str' + str(i // 3), i * 100)
+        if i % 10 == 9:
+            print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
 
 
-    #
+    # #
     # print("\nPDF - contains_key example 1")
     # print("----------------------------")
     # m = HashMap(10, hash_function_1)
@@ -440,22 +447,22 @@ if __name__ == "__main__":
     # m.resize_table(2)
     # print(m.get_keys())
 
-    print("\nself- put example")
-    print("-----------------------------")
-    m = HashMap(40, hash_function_2)
-    m.put('str0', 200)
-    m.put('str1', 500)
-    m.put('str10', 3000)
-    m.put('str2', 800)
-    m.put('str3', 1100)
-    m.put('str4', 1400)
-    m.put('str5', 1700)
-    m.put('str6', 2000)
-    m.put('str7', 2300)
-    m.put('str8', 2600)
-    m.put('str9', 2900)
-    print("ori size=", m.size)
+    # print("\nself- put example")
+    # print("-----------------------------")
+    # m = HashMap(40, hash_function_2)
+    # m.put('str0', 200)
+    # m.put('str1', 500)
+    # m.put('str10', 3000)
+    # m.put('str2', 800)
+    # m.put('str3', 1100)
+    # m.put('str4', 1400)
+    # m.put('str5', 1700)
+    # m.put('str6', 2000)
+    # m.put('str7', 2300)
+    # m.put('str8', 2600)
+    # m.put('str9', 2900)
+    # print("ori size=", m.size)
     # print(m)
-    m.put('str10', 3100)
-    print("new size=", m.size)
+    # m.put('str10', 3100)
+    # print("new size=", m.size)
     # print(m)
