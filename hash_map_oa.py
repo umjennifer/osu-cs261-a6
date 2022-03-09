@@ -1,13 +1,11 @@
-# Name:
-# OSU Email:
+# Name: Jennifer Um
+# OSU Email: umj@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
-
+# Assignment: 6 - HashMap (Portfolio Assignment)
+# Due Date: 2022-03-11
+# Description: Implement a hashmap0 using open addressing with quadratic probing.
 
 from a6_include import *
-
 
 class HashEntry:
 
@@ -227,35 +225,50 @@ class HashMap:
         if new_capacity < 1 or new_capacity < self.size:
             return
         da = self.get_keys()
-
-
-        # print(da)
-        # print(da.length())
-        old = HashMap(self.capacity, self.hash_function)
-        old.size = self.size
-        for i in range(self.capacity):
-            old.buckets[i] = self.buckets[i]
-            #print("old.buckets[i]=", old.buckets[i])
-        # print("new_capacity=", new_capacity)
-        # print("da.length=",da.length(), "da=", da)
-
-        #print("old=", old)
+        old_bucket = DynamicArray(da.length())
+        for i in range(da.length()):
+            key = da[i]
+            value = self.get(key)
+            old_bucket[i] = HashEntry(key, value)
 
         self.clear()
         self.capacity = new_capacity
-        self.buckets = DynamicArray()
-        for _ in range(new_capacity):
-            self.buckets.append(None)
+        self.buckets = DynamicArray(new_capacity)
+        for i in range(old_bucket.length()):
+            curr_key = old_bucket[i].key
+            curr_val = old_bucket[i].value
+            self.put(curr_key, curr_val)
 
-        for i in range(da.length()):
-            # print("a")
-            key = da[i]
-            value = old.get(key)
-            # print("key=", key, "found_val=", value)
-            self.put(key, value)
 
-        # print("old size=", old.size, "\n", old)
-        # print("new size=", self.size, "\n", self)
+
+        # # print(da)
+        # # print(da.length())
+        # old = HashMap(self.capacity, self.hash_function)
+        # old.size = self.size
+        # for i in range(self.capacity):
+        #     old.buckets[i] = self.buckets[i]
+        #     #print("old.buckets[i]=", old.buckets[i])
+        # # print("new_capacity=", new_capacity)
+        # # print("da.length=",da.length(), "da=", da)
+        #
+        # #print("old=", old)
+        #
+        # self.clear()
+        # self.capacity = new_capacity
+        # self.buckets = DynamicArray()
+        # for _ in range(new_capacity):
+        #     self.buckets.append(None)
+        #
+        # for i in range(da.length()):
+        #     # print("a")
+        #     key = da[i]
+        #     value = old.get(key)
+        #     # print("key=", key, "found_val=", value)
+        #     self.put(key, value)
+        #
+        # # print("old size=", old.size, "\n", old)
+        # # print("new size=", self.size, "\n", self)
+
 
 
 
