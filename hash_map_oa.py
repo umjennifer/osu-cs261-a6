@@ -224,13 +224,22 @@ class HashMap:
         TODO: Write this implementation
         """
         # remember to rehash non-deleted entries into new table
-        if new_capacity < 1:
+        if new_capacity < 1 or new_capacity < self.size:
             return
         da = self.get_keys()
+
+
+        # print(da)
+        # print(da.length())
         old = HashMap(self.capacity, self.hash_function)
         old.size = self.size
         for i in range(self.capacity):
             old.buckets[i] = self.buckets[i]
+            #print("old.buckets[i]=", old.buckets[i])
+        # print("new_capacity=", new_capacity)
+        # print("da.length=",da.length(), "da=", da)
+
+        #print("old=", old)
 
         self.clear()
         self.capacity = new_capacity
@@ -242,6 +251,7 @@ class HashMap:
             # print("a")
             key = da[i]
             value = old.get(key)
+            # print("key=", key, "found_val=", value)
             self.put(key, value)
 
         # print("old size=", old.size, "\n", old)
@@ -330,21 +340,21 @@ if __name__ == "__main__":
     # m.clear()
     # print(m.size, m.capacity)
 
-    print("\nPDF - put example 1")
-    print("-------------------")
-    m = HashMap(50, hash_function_1)
-    for i in range(150):
-        m.put('str' + str(i), i * 100)
-        if i % 25 == 24:
-            print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
-
-    print("\nPDF - put example 2")
-    print("-------------------")
-    m = HashMap(40, hash_function_2)
-    for i in range(50):
-        m.put('str' + str(i // 3), i * 100)
-        if i % 10 == 9:
-            print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
+    # print("\nPDF - put example 1")
+    # print("-------------------")
+    # m = HashMap(50, hash_function_1)
+    # for i in range(150):
+    #     m.put('str' + str(i), i * 100)
+    #     if i % 25 == 24:
+    #         print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
+    #
+    # print("\nPDF - put example 2")
+    # print("-------------------")
+    # m = HashMap(40, hash_function_2)
+    # for i in range(50):
+    #     m.put('str' + str(i // 3), i * 100)
+    #     if i % 10 == 9:
+    #         print("i=", i, "empty_buckets=", m.empty_buckets(), "load=",m.table_load(), "size=",m.size, "cap=",m.capacity)
 
 
     # #
@@ -466,3 +476,42 @@ if __name__ == "__main__":
     # m.put('str10', 3100)
     # print("new size=", m.size)
     # print(m)
+
+
+    print("\nself- resize example")
+    print("-----------------------------")
+    m = HashMap(80, hash_function_2)
+    m.size = 29
+    m.buckets[0] = HashEntry('key523', 422)
+    m.buckets[2] = HashEntry('key343', -847)
+    m.buckets[3] = HashEntry('key334', 470)
+    m.buckets[4] = HashEntry('key921', -308)
+    m.buckets[5] = HashEntry('key967', -714)
+    m.buckets[7] = HashEntry('key570', 318)
+    m.buckets[15] = HashEntry('key472', -128)
+    m.buckets[16] = HashEntry('key761', -887)
+    m.buckets[18] = HashEntry('key905', 487)
+    m.buckets[22] = HashEntry('key924', -367)
+    m.buckets[24] = HashEntry('key663', -817)
+    m.buckets[25] = HashEntry('key790', -729)
+    m.buckets[29] = HashEntry('key294', -681)
+    m.buckets[30] = HashEntry('key366', 15)
+    m.buckets[31] = HashEntry('key664', -759)
+    m.buckets[34] = HashEntry('key683', -531)
+    m.buckets[37] = HashEntry('key873', -837)
+    m.buckets[41] = HashEntry('key458', 153)
+    m.buckets[42] = HashEntry('key287', 800)
+    m.buckets[43] = HashEntry('key819', 67)
+    m.buckets[44] = HashEntry('key955', 887)
+    m.buckets[48] = HashEntry('key586', -520)
+    m.buckets[60] = HashEntry('key104', 334)
+    m.buckets[61] = HashEntry('key877', -535)
+    m.buckets[64] = HashEntry('key502', -392)
+    m.buckets[69] = HashEntry('key431', 261)
+    m.buckets[71] = HashEntry('key251', 62)
+    m.buckets[76] = HashEntry('key125', -566)
+    m.buckets[78] = HashEntry('key541', 842)
+    print(m)
+    m.resize_table(10)
+    #print("new m")
+    #print(m)
