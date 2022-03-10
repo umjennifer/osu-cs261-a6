@@ -1,9 +1,9 @@
-# Name:
-# OSU Email:
+# Name: Jennifer Um
+# OSU Email: umj@oregonstate.du
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
+# Assignment: 6 - Hash Map Implementation
+# Due Date: 2022-03-11
+# Description: Implement a Hashmap using chaining
 
 
 from a6_include import *
@@ -60,19 +60,25 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Clear the contents of a hashmap without changing the underlying hash table capacity.
+        :return: None
         """
         for i in range(self.buckets.length()):
-            self.buckets[i] = LinkedList()
+            self.buckets.set_at_index(i, LinkedList())
         self.size = 0
 
     def get(self, key: str) -> object:
         """
-        TODO: Write this implementation
+        Return the value associated with a key.
+        :param key: key to find the value of
+        :return:
+            - Value associated with a key.
+            - If key is not found, return none.
         """
         h = self.hash_function(key)
         i = h % self.buckets.length()
-        node_matching_key = self.buckets[i].contains(key)
+        node_matching_key = self.buckets.get_at_index(i).contains(key)
+
         if node_matching_key is not None:
             return node_matching_key.value
         return None
@@ -80,103 +86,122 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Update the key/ value pair in the hash map.
+            - If key exists, update associated value.
+            - If key does not exist, add the key/ value pair.
+        :param key: key of the node to update
+        :param value: value of the key
+        :return: none
         """
-
         h = self.hash_function(key)
         i = h % self.buckets.length()
+        node_matching_key = self.buckets.get_at_index(i).contains(key)
 
-        node_matching_key = self.buckets[i].contains(key)
-
-        # print("node_matching_key=", node_matching_key)
         if node_matching_key is None:
-            self.buckets[i].insert(key,value)
+            self.buckets.get_at_index(i).insert(key,value)
             self.size += 1
         else:
-            self.buckets[i].remove(key)
-            self.buckets[i].insert(key,value)
+            self.buckets.get_at_index(i).remove(key)
+            self.buckets.get_at_index(i).insert(key,value)
 
 
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Remove a key and its associated value.
+            - If a key is not in the hash map, do nothing.
+        :param key: key of the node to be removed
+        :return: none
         """
         h = self.hash_function(key)
         i = h % self.buckets.length()
-        if self.buckets[i].contains(key):
-            self.buckets[i].remove(key)
+
+        if self.buckets.get_at_index(i).contains(key):
+            self.buckets.get_at_index(i).remove(key)
             self.size -= 1
 
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        Check if a given key in the hash map.
+        :param key:
+        :return:
+            - True if key is in the hash map
+            - otherwise, return false
         """
         if self.size == 0:
             return False
+
         h = self.hash_function(key)
         i = h % self.buckets.length()
-        if self.buckets[i].contains(key):
+
+        if self.buckets.get_at_index(i).contains(key):
             return True
         else:
             return False
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementationdd
+        Get the number of empty buckets in a hash table
+        :return: the number of empty buckets
         """
         empty_buckets_count = 0
         for i in range(self.buckets.length()):
-            # print("i=",i, "self.buckets[i].length()=",self.buckets[i].length())
-            if self.buckets[i].length() == 0:
+            if self.buckets.get_at_index(i).length() == 0:
                 empty_buckets_count += 1
+
         return empty_buckets_count
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        Get the current hash table load factor.
+        :return: the current hash table load factor
         """
         return self.size / self.capacity
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Change the capacity of the internal hash table.
+            - Key / value pairs must remain the same.
+            - Keys must be rehashed.
+            - If new_capacity is greater than one, do nothing.
+        :param new_capacity: new capacity of the hash table
+        :return: none
         """
-
         if new_capacity < 1:
             return
+
         da = self.get_keys()
+        # create a hash map we can reference
         old = HashMap(self.capacity, self.hash_function)
         for i in range(self.capacity):
-            old.buckets[i] = self.buckets[i]
+            old.buckets.set_at_index(i, self.buckets.get_at_index(i))
 
+        # clear self, but keep size and hash function
         self.clear()
         self.capacity = new_capacity
         self.buckets = DynamicArray()
+
         for _ in range(new_capacity):
             self.buckets.append(LinkedList())
 
         for i in range(da.length()):
-            key = da[i]
+            key = da.get_at_index(i)
             value = old.get(key)
             self.put(key, value)
-        # print("self=", self)
 
 
 
     def get_keys(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        Get a dynamic array of all the keys in the hash map.
+            - Order does not matter.
+        :return: a dynamic array of keys
         """
         da = DynamicArray()
-        # print(self)
         for i in range(self.capacity):
-            # print(self.buckets[i])
-            for node in self.buckets[i]:
+            for node in self.buckets.get_at_index(i):
                 da.append(node.key)
         return da
-
-
 
 
 # BASIC TESTING
