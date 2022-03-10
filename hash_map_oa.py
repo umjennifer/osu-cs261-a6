@@ -1,11 +1,14 @@
-# Name: Jennifer Um
-# OSU Email: umj@oregonstate.edu
+
+# Name:
+# OSU Email:
 # Course: CS261 - Data Structures
-# Assignment: 6 - HashMap (Portfolio Assignment)
-# Due Date: 2022-03-11
-# Description: Implement a hashmap0 using open addressing with quadratic probing.
+# Assignment:
+# Due Date:
+# Description:
+
 
 from a6_include import *
+
 
 class HashEntry:
 
@@ -224,51 +227,76 @@ class HashMap:
         # remember to rehash non-deleted entries into new table
         if new_capacity < 1 or new_capacity < self.size:
             return
-        da = self.get_keys()
-        old_bucket = DynamicArray(da.length())
-        for i in range(da.length()):
-            key = da[i]
-            value = self.get(key)
-            old_bucket[i] = HashEntry(key, value)
+        # da = self.get_keys()
+        old_buckets = DynamicArray()
+        for i in range(self.capacity):
+            old_buckets.append(self.buckets.get_at_index(i))
 
-        self.clear()
-        self.capacity = new_capacity
-        self.buckets = DynamicArray(new_capacity)
-        for i in range(old_bucket.length()):
-            curr_key = old_bucket[i].key
-            curr_val = old_bucket[i].value
-            self.put(curr_key, curr_val)
-
-
-
-        # # print(da)
-        # # print(da.length())
+        # print(da)
+        # print(da.length())
         # old = HashMap(self.capacity, self.hash_function)
         # old.size = self.size
         # for i in range(self.capacity):
         #     old.buckets[i] = self.buckets[i]
-        #     #print("old.buckets[i]=", old.buckets[i])
-        # # print("new_capacity=", new_capacity)
-        # # print("da.length=",da.length(), "da=", da)
-        #
-        # #print("old=", old)
-        #
-        # self.clear()
-        # self.capacity = new_capacity
-        # self.buckets = DynamicArray()
-        # for _ in range(new_capacity):
-        #     self.buckets.append(None)
-        #
-        # for i in range(da.length()):
-        #     # print("a")
-        #     key = da[i]
-        #     value = old.get(key)
-        #     # print("key=", key, "found_val=", value)
-        #     self.put(key, value)
-        #
-        # # print("old size=", old.size, "\n", old)
-        # # print("new size=", self.size, "\n", self)
+            #print("old.buckets[i]=", old.buckets[i])
+        # print("new_capacity=", new_capacity)
+        # print("da.length=",da.length(), "da=", da)
 
+        #print("old=", old)
+
+        self.clear()
+        self.capacity = new_capacity
+        self.buckets = DynamicArray()
+        for _ in range(new_capacity):
+            self.buckets.append(None)
+
+        for i in range(self.size):
+            # print("a")
+            key = old_buckets[i].key
+            value = old_buckets[i].value
+            # print("key=", key, "found_val=", value)
+            self.put(key, value)
+
+        # print("old size=", old.size, "\n", old)
+        # print("new size=", self.size, "\n", self)
+
+    def resize_table2(self, new_capacity: int) -> None:
+        """
+        TODO: Write this implementation
+        """
+        # remember to rehash non-deleted entries into new table
+        if new_capacity < 1 or new_capacity < self.size:
+            return
+        da = self.get_keys()
+
+
+        # print(da)
+        # print(da.length())
+        old = HashMap(self.capacity, self.hash_function)
+        old.size = self.size
+        for i in range(self.capacity):
+            old.buckets[i] = self.buckets[i]
+            #print("old.buckets[i]=", old.buckets[i])
+        # print("new_capacity=", new_capacity)
+        # print("da.length=",da.length(), "da=", da)
+
+        #print("old=", old)
+
+        self.clear()
+        self.capacity = new_capacity
+        self.buckets = DynamicArray()
+        for _ in range(new_capacity):
+            self.buckets.append(None)
+
+        for i in range(da.length()):
+            # print("a")
+            key = da[i]
+            value = old.get(key)
+            # print("key=", key, "found_val=", value)
+            self.put(key, value)
+
+        # print("old size=", old.size, "\n", old)
+        # print("new size=", self.size, "\n", self)
 
 
 
@@ -286,18 +314,18 @@ class HashMap:
 
 if __name__ == "__main__":
 
-    # print("\nPDF - empty_buckets example 1")
-    # print("-----------------------------")
-    # m = HashMap(100, hash_function_1)
-    # print(m.empty_buckets(), m.size, m.capacity)
-    # m.put('key1', 10)
-    # print(m.empty_buckets(), m.size, m.capacity)
-    # m.put('key2', 20)
-    # print(m.empty_buckets(), m.size, m.capacity)
-    # m.put('key1', 30)
-    # print(m.empty_buckets(), m.size, m.capacity)
-    # m.put('key4', 40)
-    # print(m.empty_buckets(), m.size, m.capacity)
+    print("\nPDF - empty_buckets example 1")
+    print("-----------------------------")
+    m = HashMap(100, hash_function_1)
+    print(m.empty_buckets(), m.size, m.capacity)
+    m.put('key1', 10)
+    print(m.empty_buckets(), m.size, m.capacity)
+    m.put('key2', 20)
+    print(m.empty_buckets(), m.size, m.capacity)
+    m.put('key1', 30)
+    print(m.empty_buckets(), m.size, m.capacity)
+    m.put('key4', 40)
+    print(m.empty_buckets(), m.size, m.capacity)
     #
     #
     # print("\nPDF - empty_buckets example 2")
@@ -491,40 +519,40 @@ if __name__ == "__main__":
     # print(m)
 
 
-    print("\nself- resize example")
-    print("-----------------------------")
-    m = HashMap(80, hash_function_2)
-    m.size = 29
-    m.buckets[0] = HashEntry('key523', 422)
-    m.buckets[2] = HashEntry('key343', -847)
-    m.buckets[3] = HashEntry('key334', 470)
-    m.buckets[4] = HashEntry('key921', -308)
-    m.buckets[5] = HashEntry('key967', -714)
-    m.buckets[7] = HashEntry('key570', 318)
-    m.buckets[15] = HashEntry('key472', -128)
-    m.buckets[16] = HashEntry('key761', -887)
-    m.buckets[18] = HashEntry('key905', 487)
-    m.buckets[22] = HashEntry('key924', -367)
-    m.buckets[24] = HashEntry('key663', -817)
-    m.buckets[25] = HashEntry('key790', -729)
-    m.buckets[29] = HashEntry('key294', -681)
-    m.buckets[30] = HashEntry('key366', 15)
-    m.buckets[31] = HashEntry('key664', -759)
-    m.buckets[34] = HashEntry('key683', -531)
-    m.buckets[37] = HashEntry('key873', -837)
-    m.buckets[41] = HashEntry('key458', 153)
-    m.buckets[42] = HashEntry('key287', 800)
-    m.buckets[43] = HashEntry('key819', 67)
-    m.buckets[44] = HashEntry('key955', 887)
-    m.buckets[48] = HashEntry('key586', -520)
-    m.buckets[60] = HashEntry('key104', 334)
-    m.buckets[61] = HashEntry('key877', -535)
-    m.buckets[64] = HashEntry('key502', -392)
-    m.buckets[69] = HashEntry('key431', 261)
-    m.buckets[71] = HashEntry('key251', 62)
-    m.buckets[76] = HashEntry('key125', -566)
-    m.buckets[78] = HashEntry('key541', 842)
-    print(m)
-    m.resize_table(10)
+    # print("\nself- resize example")
+    # print("-----------------------------")
+    # m = HashMap(80, hash_function_2)
+    # m.size = 29
+    # m.buckets[0] = HashEntry('key523', 422)
+    # m.buckets[2] = HashEntry('key343', -847)
+    # m.buckets[3] = HashEntry('key334', 470)
+    # m.buckets[4] = HashEntry('key921', -308)
+    # m.buckets[5] = HashEntry('key967', -714)
+    # m.buckets[7] = HashEntry('key570', 318)
+    # m.buckets[15] = HashEntry('key472', -128)
+    # m.buckets[16] = HashEntry('key761', -887)
+    # m.buckets[18] = HashEntry('key905', 487)
+    # m.buckets[22] = HashEntry('key924', -367)
+    # m.buckets[24] = HashEntry('key663', -817)
+    # m.buckets[25] = HashEntry('key790', -729)
+    # m.buckets[29] = HashEntry('key294', -681)
+    # m.buckets[30] = HashEntry('key366', 15)
+    # m.buckets[31] = HashEntry('key664', -759)
+    # m.buckets[34] = HashEntry('key683', -531)
+    # m.buckets[37] = HashEntry('key873', -837)
+    # m.buckets[41] = HashEntry('key458', 153)
+    # m.buckets[42] = HashEntry('key287', 800)
+    # m.buckets[43] = HashEntry('key819', 67)
+    # m.buckets[44] = HashEntry('key955', 887)
+    # m.buckets[48] = HashEntry('key586', -520)
+    # m.buckets[60] = HashEntry('key104', 334)
+    # m.buckets[61] = HashEntry('key877', -535)
+    # m.buckets[64] = HashEntry('key502', -392)
+    # m.buckets[69] = HashEntry('key431', 261)
+    # m.buckets[71] = HashEntry('key251', 62)
+    # m.buckets[76] = HashEntry('key125', -566)
+    # m.buckets[78] = HashEntry('key541', 842)
+    # print(m)
+    # m.resize_table(10)
     #print("new m")
     #print(m)
