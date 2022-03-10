@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 6 - Hash Map Implementation
 # Due Date: 2022-03-11
-# Description: Implement a Hashmap using open addressing
+# Description: Implement a hash map using open addressing.
 
 from a6_include import *
 
@@ -80,166 +80,172 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Clear the contents of a hashmap without changing the underlying hash table capacity.
+        :return: None
         """
         for i in range(self.buckets.length()):
-            self.buckets[i] = None
+            self.buckets.set_at_index(i, None)
         self.size = 0
 
     def get(self, key: str) -> object:
         """
-        TODO: Write this implementation
+        Return the value associated with a key. Quadratic probing is required.
+        :param key: key to find the value of
+        :return:
+            - Value associated with a key.
+            - If key is not found, return none.
         """
-        # quadratic probing required
+        if self.contains_key(key) is False:
+            return
+
         h = self.hash_function(key)
         i = h % self.buckets.length()
         j = 0
         i_initial = i
-
-        if self.contains_key(key) is False:
-            return
-
-        while self.buckets[i] is not None:
-            if self.buckets[i].is_tombstone is False:
-                if self.buckets[i].key == key:
-                    return self.buckets[i].value
+        while self.buckets.get_at_index(i) is not None:
+            if self.buckets.get_at_index(i).is_tombstone is False:
+                if self.buckets.get_at_index(i).key == key:
+                    return self.buckets.get_at_index(i).value
+            # quadratic probing
             j += 1
             i = (i_initial + (j * j)) % self.capacity
 
-
-
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Update the key/ value pair in the hash map.
+            - If key exists, update associated value.
+            - If key does not exist, add the key/ value pair.
+        Before updating, if the table's load size is >= 0.5, double the capacity first.
+        :param key: key of the node to update
+        :param value: value of the key
+        :return: none
         """
-        # remember, if the load factor is greater than or equal to 0.5,
-        # resize the table before putting the new key/value pair
-        #
-        # quadratic probing required
         load_factor = self.table_load()
         if load_factor >= 0.5:
-            # print("load_factor=", self.table_load()) # TODO: DEBUG
             self.resize_table(self.capacity * 2)
         h = self.hash_function(key)
         i = h % self.buckets.length()
 
-        if self.buckets[i] is None:
-            self.buckets[i] = HashEntry(key, value)
+        if self.buckets.get_at_index(i) is None:
+            self.buckets.set_at_index(i, HashEntry(key, value))
             self.size += 1
-        elif self.buckets[i].is_tombstone is True:
-            self.buckets[i] = HashEntry(key, value)
-        else: # self.buckets[i] is not None and self.buckets[i] is not a tombstone
+        elif self.buckets.get_at_index(i).is_tombstone is True:
+            self.buckets.set_at_index(i, HashEntry(key, value))
+        else:  # self.buckets[i] is not None and self.buckets[i] is not a tombstone record
             j = 0
             i_initial = i
-            while self.buckets[i] is not None:
-                # print("i=",i, "key=", key, "value=", value, "j=",j, "i_initial=", i_initial, "self.buckets[i]=", self.buckets[i], end=" ")
-                if self.buckets[i].key == key:
-                    if self.buckets[i].is_tombstone is False: # matching key and is not tombstone record
-                        self.buckets[i].value = value
+            while self.buckets.get_at_index(i) is not None:
+                if self.buckets.get_at_index(i).key == key:
+                    if self.buckets.get_at_index(i).is_tombstone is False:  # keys match and is not tombstone record
+                        self.buckets.get_at_index(i).value = value
                         return
-                    else:  # matching key and is tombstone record
-                        self.buckets[i].value = value
-                        self.buckets[i].is_tombstone = False
+                    else:  # keys match and is a tombstone record
+                        self.buckets.get_at_index(i).value = value
+                        self.buckets.get_at_index(i).is_tombstone = False
                         return
-                else: # self.buckets[i] is not None and not matching key
-                    if self.buckets[i].is_tombstone is True:
-                        self.buckets[i] = HashEntry(key, value)
+                else:
+                    if self.buckets.get_at_index(i).is_tombstone is True:  # keys do not match and is a tombstone record
+                        self.buckets.set_at_index(i, HashEntry(key, value))
                         return
-                    else:
+                    else:  # keys do not match and is not a tombstone record
                         j += 1
                         i = (i_initial + (j * j)) % self.capacity
-                    # print("  new_i=", i)
-                # print(self)
+            # at this point, self.buckets.get_at_index(i) is None:
             if i != i_initial:
-                # print("     pt a key=", key, "prechange self.buckets[i]=", self.buckets[i])
-                self.buckets[i] = HashEntry(key, value)
+                self.buckets.set_at_index(i, HashEntry(key, value))
                 self.size += 1
 
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Remove a key and its associated value.
+            - If a key is not in the hash map, do nothing.
+            - Quadratic probing is required.
+        :param key: key of the node to be removed
+        :return: none
         """
-        # quadratic probing required
+        if self.contains_key(key) is False:
+            return
+
         h = self.hash_function(key)
         i = h % self.buckets.length()
         j = 0
         i_initial = i
-
-        if self.contains_key(key) is False:
-            return
-
-        while self.buckets[i] is not None:
-            if self.buckets[i].is_tombstone is False:
-                if self.buckets[i].key == key:
-                    self.buckets[i].is_tombstone = True
+        while self.buckets.get_at_index(i) is not None:
+            if self.buckets.get_at_index(i).is_tombstone is False:
+                if self.buckets.get_at_index(i).key == key:
+                    self.buckets.get_at_index(i).is_tombstone = True
                     self.size -= 1
                     return
             j += 1
             i = (i_initial + (j * j)) % self.capacity
 
-
-
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        Check if a given key in the hash map.
+        :param key: to search for
+        :return:
+            - True if key is in the hash map
+            - otherwise, return False
         """
-        # quadratic probing required
         if self.size == 0:
             return False
+
         h = self.hash_function(key)
         i = h % self.buckets.length()
         j = 0
         i_initial = i
-        while self.buckets[i] is not None:
-            if self.buckets[i].is_tombstone is False:
-                if self.buckets[i].key == key:
+
+        while self.buckets.get_at_index(i) is not None:
+            if self.buckets.get_at_index(i).is_tombstone is False:
+                if self.buckets.get_at_index(i).key == key:
                     return True
             j += 1
             i = (i_initial + (j * j)) % self.capacity
+
         return False
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        Get the number of empty buckets in a hash table
+        :return: the number of empty buckets
         """
         empty_buckets_count = 0
         for i in range(self.buckets.length()):
-            if self.buckets[i] is None:
+            if self.buckets.get_at_index(i) is None:
                 empty_buckets_count += 1
-            elif self.buckets[i].is_tombstone is True:
+            elif self.buckets.get_at_index(i).is_tombstone is True:
                 empty_buckets_count += 1
-        # print("empty_buckets=", empty_buckets_count, "self.size=", self.size, "self=", self)
         return empty_buckets_count
 
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        Get the current hash table load factor.
+        :return: the current hash table load factor
         """
         return self.size / self.capacity
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Change the capacity of the internal hash table.
+            - Key / value pairs must remain the same.
+            - Keys must be rehashed.
+            - If new_capacity is less than one or
+                less than current number of elements in the hash map,
+                do nothing.
+        :param new_capacity: new capacity of the hash table
+        :return: none
         """
-        # remember to rehash non-deleted entries into new table
         if new_capacity < 1 or new_capacity < self.size:
             return
+
         da = self.get_keys()
-
-
-        # print(da)
-        # print(da.length())
         old = HashMap(self.capacity, self.hash_function)
         old.size = self.size
         for i in range(self.capacity):
-            old.buckets[i] = self.buckets[i]
-            #print("old.buckets[i]=", old.buckets[i])
-        # print("new_capacity=", new_capacity)
-        # print("da.length=",da.length(), "da=", da)
+            old.buckets.set_at_index(i, self.buckets.get_at_index(i))
 
-        #print("old=", old)
-
+        # clear bucket and reset capacity, but keep size and hash function
         self.clear()
         self.capacity = new_capacity
         self.buckets = DynamicArray()
@@ -247,26 +253,20 @@ class HashMap:
             self.buckets.append(None)
 
         for i in range(da.length()):
-            # print("a")
-            key = da[i]
+            key = da.get_at_index(i)
             value = old.get(key)
-            # print("key=", key, "found_val=", value)
             self.put(key, value)
-
-        # print("old size=", old.size, "\n", old)
-        # print("new size=", self.size, "\n", self)
-
-
-
 
     def get_keys(self) -> DynamicArray:
         """
-        TODO: Write this implementations
+        Get a dynamic array of all the keys in the hash map.
+            - Order does not matter.
+        :return: a dynamic array of keys
         """
         da = DynamicArray()
         for i in range(self.capacity):
-            if self.buckets[i] is not None and self.buckets[i].is_tombstone is False:
-                da.append(self.buckets[i].key)
+            if self.buckets.get_at_index(i) is not None and self.buckets.get_at_index(i).is_tombstone is False:
+                da.append(self.buckets.get_at_index(i).key)
         return da
 
 

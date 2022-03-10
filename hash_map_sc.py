@@ -3,8 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 6 - Hash Map Implementation
 # Due Date: 2022-03-11
-# Description: Implement a Hashmap using chaining
-
+# Description: Implement a hash map using chaining.
 
 from a6_include import *
 
@@ -119,14 +118,13 @@ class HashMap:
             self.buckets.get_at_index(i).remove(key)
             self.size -= 1
 
-
     def contains_key(self, key: str) -> bool:
         """
         Check if a given key in the hash map.
-        :param key:
+        :param key: key to search for
         :return:
             - True if key is in the hash map
-            - otherwise, return false
+            - otherwise, return False
         """
         if self.size == 0:
             return False
@@ -163,7 +161,7 @@ class HashMap:
         Change the capacity of the internal hash table.
             - Key / value pairs must remain the same.
             - Keys must be rehashed.
-            - If new_capacity is greater than one, do nothing.
+            - If new_capacity is less than one, do nothing.
         :param new_capacity: new capacity of the hash table
         :return: none
         """
@@ -176,7 +174,7 @@ class HashMap:
         for i in range(self.capacity):
             old.buckets.set_at_index(i, self.buckets.get_at_index(i))
 
-        # clear self, but keep size and hash function
+        # clear bucket and reset capacity, but keep size and hash function
         self.clear()
         self.capacity = new_capacity
         self.buckets = DynamicArray()
@@ -188,8 +186,6 @@ class HashMap:
             key = da.get_at_index(i)
             value = old.get(key)
             self.put(key, value)
-
-
 
     def get_keys(self) -> DynamicArray:
         """
